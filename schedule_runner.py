@@ -13,11 +13,11 @@ def send_news_update():
     post_to_slack(f"*Daily News Summary:*\n\n{summary}")
 
 # Schedule the job (UTC time, adjust as needed)
-schedule.every().day.at("21:25").do(send_news_update) # 8am PST
+schedule.every().day.at("22:19").do(send_news_update) # 8am PST
 
 print("Scheduler started...")
 
 # Run loop
 while True:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep(30)

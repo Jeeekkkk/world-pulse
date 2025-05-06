@@ -4,13 +4,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
-DEFAULT_CHANNEL = "#world_pulse"
+DEFAULT_CHANNEL = "#world-pulse"
 
 slack_client = WebClient(token=BOT_TOKEN)
 
 def post_to_slack(text, channel=DEFAULT_CHANNEL):
     try:
-        slack_client.chat_postMessage(channel=channel,text=text)
+        response = slack_client.chat_postMessage(channel=channel,text=text)
         if not response["ok"]:
             print("Failed to send message:", response["error"])
         return response
