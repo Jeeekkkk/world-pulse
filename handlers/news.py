@@ -41,13 +41,25 @@ def summarize_articles_with_gpt(articles):
         return "No news articles found for yesterday."
 
     content = "\n".join(
-        f"- [{a['source']['name']}] {a['title']}" for a in articles if a.get("title")
+    f"- [{a['source']['name']}] {a['title']}" for a in articles if a.get("title")
     )
 
+
+    today = datetime.utcnow().strftime("%B %d, %Y")
+
     prompt = (
-        "You are a neutral news summarizer. From the list of headlines below, select the 5 most important "
-        "U.S. news stories and the 5 most important international news stories. Only summarize based on what's listed.\n\n"
-        f"{content}"
+    f"You are a helpful and unbiased news summarizer. Today is {today}.\n"
+    f"Do not invent facts or add outside context. Only summarize what is in the list of headlines below.\n\n"
+    f"Select the 5 most important U.S. news stories and 5 most important international news stories.\n\n"
+    f"Format your response exactly like this:\n"
+    f"**U.S. News:**\n"
+    f"1. *[Source] Title* — One-sentence summary.\n"
+    f"...\n\n"
+    f"**International News:**\n"
+    f"1. *[Source] Title* — One-sentence summary.\n"
+    f"...\n\n"
+    f"Here is the list of headlines:\n\n"
+    f"{content}"
     )
 
     response = client.chat.completions.create(
