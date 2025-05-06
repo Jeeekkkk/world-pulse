@@ -4,6 +4,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import json
+from logger import logger
 
 # Load environment variables
 load_dotenv()
@@ -22,23 +23,32 @@ def fetch_headlines():
         "sources": "associated-press,npr,reuters,politico,bbc-news",
     }
     headers = {"Authorization": NEWSORG_API_KEY}
-    response = requests.get(url,params=params,headers=headers)
-    return response.json().get("articles", [])
+    try:
+        response = requests.get(url,params=params,headers=headers)
+        return response.json().get("articles", [])
+        logger.info("Success fetching news headlines news API")
+    except Exception as e:
+        logger.error("Unsuccessful news org API call in news.fetch_headlines() on Error: %s", str(e))
 
 # Filters articles published on the previous day
 def filter_by_yesterday(articles):
-    utc_now = datetime.utcnow()
-    yesterday = utc_now - timedelta(days=1)
-    return [
-        a for a in articles
-        if 'publishedAt' in a and
-        yesterday.date() == datetime.fromisoformat(a['publishedAt'].replace('Z','+00:00')).date()
-    ]
+    try:
+        utc_now = datetime.utcnow()
+        yesterday = utc_now - timedelta(days=1)
+        return [
+            a for a in articles
+            if 'publishedAt' in a and
+            yesterday.date() == datetime.fromisoformat(a['publishedAt'].replace('Z','+00:00')).date()
+        ]
+        logger.info("Success filtering to yesterdays news")
+    except Exception as e:
+        logger.error("Failed to filter to yesterdays news in handlers/news.filter_by_yesterday() on Error: %s", str(e))
 
 # Summarizes filtered articles using OpenAI GPT
 def summarize_articles_with_gpt(articles):
     if not articles:
         return "No news articles found for yesterday."
+        logger.warning("No news articles were returned for yesterdays news")
 
     content = "\n".join(
     f"- [{a['source']['name']}] {a['title']}" for a in articles if a.get("title")
@@ -82,8 +92,5 @@ def get_news_summary():
 # Script entry point for testing
 if __name__ == "__main__":
     summary = get_news_summary()
-
-    with open("news_summary.txt", "w", encoding="utf-8") as f:
-        f.write(summary)
-
-    print("News summary saved to news_summary.txt")
+    from logger import logger
+    logger.info("File ran successfully: 'handlers/news.py")
