@@ -62,11 +62,14 @@ def summarize_articles_with_gpt(articles):
 
     return response.choices[0].message.content
 
-# Script entry point for testing
-if __name__ == "__main__":
+def get_news_summary():
     articles = fetch_headlines()
     filtered = filter_by_yesterday(articles)
-    summary = summarize_articles_with_gpt(filtered)
+    return summarize_articles_with_gpt(filtered)
+
+# Script entry point for testing
+if __name__ == "__main__":
+    summary = get_news_summary()
 
     with open("news_summary.txt", "w", encoding="utf-8") as f:
         f.write(summary)
