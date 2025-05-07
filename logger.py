@@ -1,10 +1,10 @@
 import logging
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
-        logging.FileHandler("worldpulse.log"),
+        logging.FileHandler("logs.log"),
         logging.StreamHandler()
     ]
 )

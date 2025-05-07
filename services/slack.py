@@ -1,6 +1,8 @@
 import os
 from slack_sdk import WebClient
 from dotenv import load_dotenv
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from logger import logger
 
 load_dotenv()
@@ -17,5 +19,4 @@ def post_to_slack(text, channel=DEFAULT_CHANNEL):
         return response
     except Exception as e:
         logger.error("Slack API in services/slack.post_to_slack() on Error:", str(e))
-        from logger import logger
         logger.info("File ran successfully: 'services/slack.py")

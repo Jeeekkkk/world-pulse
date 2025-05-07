@@ -4,6 +4,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import json
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from logger import logger
 
 # Load environment variables
