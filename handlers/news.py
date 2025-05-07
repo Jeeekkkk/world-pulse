@@ -22,7 +22,7 @@ def fetch_headlines():
     params = {
         "language": "en",
         "pageSize": 50,
-        "sources": "associated-press,npr,reuters,politico,bbc-news",
+        "sources": "npr,reuters,bbc-news",
     }
     headers = {"Authorization": NEWSORG_API_KEY}
     try:
@@ -52,8 +52,10 @@ def summarize_articles_with_gpt(articles):
         return "No news articles found for yesterday."
         logger.warning("No news articles were returned for yesterdays news")
 
+
     content = "\n".join(
-    f"- [{a['source']['name']}] {a['title']}" for a in articles if a.get("title")
+    f"- [{a['source']['name']}] {a['title']}\n{a.get('description', '')}\n{a.get('content', '')}"
+    for a in articles if a.get("title")
     )
 
 
