@@ -22,7 +22,7 @@ def fetch_headlines():
     params = {
         "language": "en",
         "pageSize": 50,
-        "sources": "npr,reuters,bbc-news",
+        "sources": "associated-press,npr,reuters,politico,bbc-news",
     }
     headers = {"Authorization": NEWSORG_API_KEY}
     try:
@@ -98,3 +98,5 @@ if __name__ == "__main__":
     summary = get_news_summary()
     from logger import logger
     logger.info("File ran successfully: 'handlers/news.py")
+
+    
